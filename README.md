@@ -152,18 +152,7 @@ Quality        : no multiQC and Nextflow statistics<br/>
 
 ## Your working directory in your working path :
 
-Download then decompress "nextflow_star.zip" in your working directory:
-
-```console
-  $ cd /home/Sarah/Documents/NEXTFLOW/TESTS
-  $ wget http://genoweb.toulouse.inra.fr/~sigenae/sarah/NEXTFLOW/nextflow_star.tar.gz
-  $ tar xzvf  nextflow_star.tar.gz
-  $ ls
-  nextflow_star  nextflow_star.tar.gz
-  $ cd nextflow_star
-```  
-
-After archive decompression, you should have following files and directories:
+Create 3 directories __annotation__ , __genome__ and __reads__ :
 
 ```console
   $ ls nextflow_star/
