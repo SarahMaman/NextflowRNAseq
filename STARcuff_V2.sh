@@ -135,6 +135,7 @@ then
 		echo "Cufflinks  ........................................ FINISH \n" &&
 		#Step : Cuffmerge
 		module load bioinfo/cufflinks-2.2.1 &&
+		./nextflow run star_V2.nf --mode cufflinksListOK --debug $debugwf --workpath $wd --resultsdir $rd   &&
 		./nextflow run star_V2.nf --mode cuffmerge --debug $debugwf --workpath $wd --resultsdir $rd --fasta $fasta --conditions  $listcond   &&
 		module unload bioinfo/cufflinks-2.2.1 &&
 		echo "Cuffmerge  ........................................ FINISH \n" &&
@@ -267,6 +268,7 @@ then
 		echo "Cufflinks  ........................................ FINISH \n" &&
 		#Step : Cuffmerge
 		module load bioinfo/cufflinks-2.2.1 &&
+		./nextflow run star_V2.nf --mode cufflinksListOK --debug $debugwf --workpath $wd --resultsdir $rd   &&
 		./nextflow run star_V2.nf --mode cuffmerge --debug $debugwf --workpath $wd --resultsdir $rd --fasta $fasta --conditions  $listcond   &&
 		module unload bioinfo/cufflinks-2.2.1 &&
 		echo "Cuffmerge  ........................................ FINISH \n" &&
@@ -313,6 +315,7 @@ then
 		echo "Cufflinks  ........................................ FINISH \n" &&
 		#Step : Cuffmerge
 		module load bioinfo/cufflinks-2.2.1 &&
+		./nextflow run star_V2.nf --mode cufflinksListOK --debug $debugwf --workpath $wd --resultsdir $rd   &&
 		./nextflow run star_V2.nf --mode cuffmerge --debug $debugwf --workpath $wd --resultsdir $rd --fasta $fasta --conditions  $listcond  &&
 		module unload bioinfo/cufflinks-2.2.1 &&
 		echo "Cuffmerge  ........................................ FINISH \n" &&
