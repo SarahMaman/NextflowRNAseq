@@ -106,13 +106,10 @@ then
 		   mkdir $wd/$rd/; chmod 777 $wd/$rd/;
 		fi
 		echo "Your results directory is created : $wd/$rd/  \n";
-		if [ ! -d "$wd/$rd/multiQC" ]; then
-		   cd $wd/$rd/; mkdir multiQC/; chmod 777 multiQC/;
-		fi
-		echo "Your quality report  $wd/$rd/multiQC/ ";
- 
-        cd $wd/ &&
-        
+		 
+                cd $wd/ &&
+                #Make output directories
+                ./nextflow run star_V2.nf --mode quantifFCDir  --debug $debugwf --workpath $wd --resultsdir $rd   &&
 		#Step : STAR index
 		#module load bioinfo/STAR-2.5.1b && module load bioinfo/samtools-1.4 &&
 		./nextflow run star_V2.nf --mode starindex   --debug $debugwf --workpath $wd --resultsdir $rd  --fasta $fasta --gtf $gtf  && 
@@ -161,14 +158,10 @@ then
 		   mkdir $wd/$rd/; chmod 777 $wd/$rd/;
 		fi
 		echo "Your results directory is created : $wd/$rd/  \n";
-		if [ ! -d "$wd/$rd/multiQC" ]; then
-		   cd $wd/$rd/; mkdir multiQC/; chmod 777 multiQC/;
-		fi
-		echo "Your quality report  $wd/$rd/multiQC/ ";
- 
-        cd $wd/ &&
-        
-       
+		
+                cd $wd/ &&
+               #Make output directories
+               ./nextflow run star_V2.nf --mode quantifFCRefDir  --debug $debugwf --workpath $wd --resultsdir $rd   &&
 		#Step : STAR index
 		#module load bioinfo/STAR-2.5.1b && module load bioinfo/samtools-1.4 &&
 		./nextflow run star_V2.nf --mode starindex  --debug $debugwf  --workpath $wd --resultsdir $rd  --fasta $fasta --gtf $gtf  && 
@@ -207,17 +200,12 @@ then
 		   mkdir $wd/$rd/; chmod 777 $wd/$rd/;
 		fi
 		echo "Your results directory is created : $wd/$rd/  \n";
-		if [ ! -d "$wd/$rd/multiQC" ]; then
-		   cd $wd/$rd/; mkdir multiQC/; chmod 777 multiQC/;
-		fi
-		echo "Your quality report  $wd/$rd/multiQC/ ";
-
-        cd $wd/ &&
-        
-        
+		cd $wd/ &&
+                #Make output directiries 
+                ./nextflow run star_V2.nf --mode quantifRSEMDir  --debug $debugwf --workpath $wd --resultsdir $rd   &&        
 		#Step : STAR index 
 		#module load bioinfo/STAR-2.5.1b && module load bioinfo/samtools-1.4 &&
-     	./nextflow run star_V2.nf --mode starindex --debug $debugwf   --workpath $wd --resultsdir $rd  --fasta $fasta --gtf $gtf  && 
+     	        ./nextflow run star_V2.nf --mode starindex --debug $debugwf   --workpath $wd --resultsdir $rd  --fasta $fasta --gtf $gtf  && 
 		#module unload bioinfo/STAR-2.5.1b && module unload bioinfo/samtools-1.4 &&
 		echo "STAR index and RSEM Genome ........................ FINISH \n" &&
 		#Step : cutadapt then STAR map
@@ -252,14 +240,9 @@ then
 		   mkdir $wd/$rd/; chmod 777 $wd/$rd/;
 		fi
 		echo "Your results directory is created : $wd/$rd/  \n";
-		if [ ! -d "$wd/$rd/multiQC" ]; then
-		   cd $wd/$rd/; mkdir multiQC/; chmod 777 multiQC/;
-		fi
-		echo "Your quality report  $wd/$rd/multiQC/ ";
-
-        cd $wd/ &&
-        
-       
+                cd $wd/ &&
+                #Make output directiries 
+                ./nextflow run star_V2.nf --mode quantifCufflinksDir  --debug $debugwf --workpath $wd --resultsdir $rd   &&      
 		#Step : STAR index 
 		#module load bioinfo/STAR-2.5.1b && module load bioinfo/samtools-1.4 &&
 		./nextflow run star_V2.nf --mode starindex  --debug $debugwf  --workpath $wd --resultsdir $rd  --fasta $fasta --gtf $gtf  && 
@@ -303,14 +286,11 @@ then
 		   mkdir $wd/$rd/; chmod 777 $wd/$rd/;
 		fi
 		echo "Your results directory is created : $wd/$rd/  \n";
-		if [ ! -d "$wd/$rd/multiQC" ]; then
-		   cd $wd/$rd/; mkdir multiQC/; chmod 777 multiQC/;
-		fi
-		echo "Your quality report  $wd/$rd/multiQC/ ";
-
-        cd $wd/ &&
-        
-        #Step : STAR index and RSEM Genome 
+		
+                cd $wd/ &&
+               #Make output directiries 
+               ./nextflow run star_V2.nf --mode modelDir  --debug $debugwf --workpath $wd --resultsdir $rd   &&
+                #Step : STAR index and RSEM Genome 
 		#module load bioinfo/STAR-2.5.1b && module load bioinfo/samtools-1.4 &&
 		./nextflow run star_V2.nf --mode starindex  --debug $debugwf  --workpath $wd --resultsdir $rd  --fasta $fasta --gtf $gtf && 
 		#module unload bioinfo/STAR-2.5.1b && module unload bioinfo/samtools-1.4 &&
