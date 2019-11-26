@@ -67,6 +67,187 @@ Channel
  * seq = Channel.fromPath('${params.workpath}/reads/*.fastq.gz')
  */
 seq = Channel.fromPath('reads/*.fastq.gz')
+
+process make_directories {
+
+    executor 'SLURM'
+	
+    script:
+    //
+    //Directories creation
+    //
+    if( params.mode == 'quantifFCDir' )
+    """
+        cd ${params.workpath}/${params.resultsdir};
+        #STAR indexation
+        if [ ! -d "${params.genomeDir}" ]; then
+			mkdir STAR_GenomeDir/; chmod 777  STAR_GenomeDir/; 
+		fi  
+		#Trimming
+		if [ ! -d "${params.readstrimmedDir}" ]; then
+			mkdir  ${params.readstrimmedDir}/; chmod 777 ${params.readstrimmedDir}/;
+		fi	
+		#STAR mapping
+		if [ ! -d "${params.mappingDir}" ]; then
+			mkdir  ${params.mappingDir}/; chmod 777 ${params.mappingDir}/;
+		fi	
+		#CUFFLINKS
+		if [ ! -d "${params.cufflinksDir}" ]; then
+			mkdir  ${params.cufflinksDir}/; chmod 777  ${params.cufflinksDir}/; 
+		fi
+		#CUFFMERGE
+		if [ ! -d "${params.cuffmergeDir}" ]; then
+			mkdir  ${params.cuffmergeDir}/; chmod 777  ${params.cuffmergeDir}/; 
+		fi
+		#FC
+		if [ ! -d "${params.fCounts}" ]; then
+			mkdir  ${params.fCounts}/; chmod 777  ${params.fCounts}/; 
+		fi
+		#Quality
+		if [ ! -d "${params.multiQC}" ]; then
+		   mkdir ${params.multiQC}/; chmod 777  ${params.multiQC}/; 
+		fi
+	"""   
+	else if( params.mode == 'quantifRSEMDir' )
+    """
+        cd ${params.workpath}/${params.resultsdir};
+        #STAR indexation
+        if [ ! -d "${params.genomeDir}" ]; then
+			mkdir STAR_GenomeDir/; chmod 777  STAR_GenomeDir/; 
+		fi  
+		#Trimming
+		if [ ! -d "${params.readstrimmedDir}" ]; then
+			mkdir  ${params.readstrimmedDir}/; chmod 777 ${params.readstrimmedDir}/;
+		fi	
+		#STAR mapping
+		if [ ! -d "${params.mappingDir}" ]; then
+			mkdir  ${params.mappingDir}/; chmod 777 ${params.mappingDir}/;
+		fi	
+		#RSEM
+		if [ ! -d "${params.rsemDir}" ]; then
+			mkdir  ${params.rsemDir}; chmod 777  ${params.rsemDir};
+		fi
+		if [ ! -d "${params.rsem}" ]; then
+			mkdir ${params.rsem}/; chmod 777  ${params.rsem}/; 
+		fi
+		#Quality
+		if [ ! -d "${params.multiQC}" ]; then
+		   mkdir ${params.multiQC}/; chmod 777  ${params.multiQC}/; 
+		fi
+	"""   
+	else if( params.mode == 'quantifFCRefDir' )
+    """
+		cd ${params.workpath}/${params.resultsdir};
+        #STAR indexation
+        if [ ! -d "${params.genomeDir}" ]; then
+			mkdir STAR_GenomeDir/; chmod 777  STAR_GenomeDir/; 
+		fi  
+		#Trimming
+		if [ ! -d "${params.readstrimmedDir}" ]; then
+			mkdir  ${params.readstrimmedDir}/; chmod 777 ${params.readstrimmedDir}/;
+		fi	
+		#STAR mapping
+		if [ ! -d "${params.mappingDir}" ]; then
+			mkdir  ${params.mappingDir}/; chmod 777 ${params.mappingDir}/;
+		fi	
+		#FConRef
+		if [ ! -d "${params.fCountsOnRef}" ]; then
+			mkdir  ${params.fCountsOnRef}/; chmod 777  ${params.fCountsOnRef}/; 
+		fi
+		#Quality
+		if [ ! -d "${params.multiQC}" ]; then
+		   mkdir ${params.multiQC}/; chmod 777  ${params.multiQC}/; 
+		fi
+    """   
+	else if( params.mode == 'quantifCufflinksDir' )
+    """
+		cd ${params.workpath}/${params.resultsdir};
+        #STAR indexation
+        if [ ! -d "${params.genomeDir}" ]; then
+			mkdir STAR_GenomeDir/; chmod 777  STAR_GenomeDir/; 
+		fi  
+		#Trimming
+		if [ ! -d "${params.readstrimmedDir}" ]; then
+			mkdir  ${params.readstrimmedDir}/; chmod 777 ${params.readstrimmedDir}/;
+		fi	
+		#STAR mapping
+		if [ ! -d "${params.mappingDir}" ]; then
+			mkdir  ${params.mappingDir}/; chmod 777 ${params.mappingDir}/;
+		fi	
+		#CUFFLINKS
+		if [ ! -d "${params.cufflinksDir}" ]; then
+			mkdir  ${params.cufflinksDir}/; chmod 777  ${params.cufflinksDir}/; 
+		fi
+		#CUFFMERGE
+		if [ ! -d "${params.cuffmergeDir}" ]; then
+			mkdir  ${params.cuffmergeDir}/; chmod 777  ${params.cuffmergeDir}/; 
+		fi
+		#Quality
+		if [ ! -d "${params.multiQC}" ]; then
+		   mkdir ${params.multiQC}/; chmod 777  ${params.multiQC}/; 
+		fi
+	"""   
+	else if( params.mode == 'modelDir' )
+    """
+		cd ${params.workpath}/${params.resultsdir};
+        #STAR indexation
+        if [ ! -d "${params.genomeDir}" ]; then
+			mkdir STAR_GenomeDir/; chmod 777  STAR_GenomeDir/; 
+		fi  
+		#Trimming
+		if [ ! -d "${params.readstrimmedDir}" ]; then
+			mkdir  ${params.readstrimmedDir}/; chmod 777 ${params.readstrimmedDir}/;
+		fi	
+		#STAR mapping
+		if [ ! -d "${params.mappingDir}" ]; then
+			mkdir  ${params.mappingDir}/; chmod 777 ${params.mappingDir}/;
+		fi	
+		#CUFFLINKS
+		if [ ! -d "${params.cufflinksDir}" ]; then
+			mkdir  ${params.cufflinksDir}/; chmod 777  ${params.cufflinksDir}/; 
+		fi
+		#CUFFMERGE
+		if [ ! -d "${params.cuffmergeDir}" ]; then
+			mkdir  ${params.cuffmergeDir}/; chmod 777  ${params.cuffmergeDir}/; 
+		fi
+		#FEELnc
+		if [ ! -d "${params.feelnc}" ]; then
+			mkdir  ${params.feelnc}; chmod 777  ${params.feelnc};
+		fi
+		#FEELnc step 1 filter
+		if [ ! -d "${params.feelnc}/filter" ]; then
+			cd  ${params.feelnc}; mkdir filter/; chmod 777 filter/;
+		fi
+		#FEELnc step 2 protein coding
+		if [ ! -d "${params.feelnc}/protein_coding/" ]; then
+			cd ${params.feelnc}; mkdir protein_coding/; chmod 777 protein_coding/;
+		fi
+		if [ ! -d "${params.feelnc}/protein_coding/shuffle" ]; then
+			cd ${params.feelnc}/protein_coding/ ; mkdir shuffle/; chmod 777 shuffle/;
+		fi
+		if [ ! -d "${params.feelnc}/protein_coding/intergenic/" ]; then
+			cd ${params.feelnc}/protein_coding/; mkdir intergenic/; chmod 777 intergenic/;
+		fi
+		#FEELnc step 3 classifier
+		if [ ! -d "${params.feelnc}/classifier/" ]; then
+		cd ${params.feelnc}/; mkdir classifier/; chmod 777 classifier/;
+		fi
+		if [ ! -d "${params.feelnc}/classifier/shuffle" ]; then
+			cd ${params.feelnc}/classifier/; mkdir shuffle/; chmod 777 shuffle/;
+		fi
+		if [ ! -d "${params.feelnc}/classifier/intergenic/" ]; then
+				cd ${params.feelnc}/classifier/; mkdir intergenic/; chmod 777 intergenic/;
+		fi 
+		#Quality
+		if [ ! -d "${params.multiQC}" ]; then
+		   cd ${params.workpath}/${params.resultsdir}; mkdir ${params.multiQC}/; chmod 777  ${params.multiQC}/; 
+		fi
+    """
+    else 
+    """
+        echo "Directories creation for your mode. \n";
+    """
+    }    
     
 process indexation_star {
 
@@ -105,55 +286,6 @@ process indexation_star {
 		echo "No STAR indexation. \n";
     """
     }
-
-process star_directories {
-
-    executor 'SLURM'
-	
-    script:
-    //
-    //Directories creation
-    //
-    if( params.mode == 'starmapDir' )
-    """
-		if [ ! -d "${params.readstrimmedDir}" ]; then
-			cd ${params.workpath}/${params.resultsdir}; mkdir  ${params.readstrimmedDir}/; chmod 777 ${params.readstrimmedDir}/;
-		fi	
-		if [ ! -d "${params.mappingDir}" ]; then
-			cd ${params.workpath}/${params.resultsdir}; mkdir  ${params.mappingDir}/; chmod 777 ${params.mappingDir}/;
-		fi	
-    """
-    else 
-    """
-        echo "Directories creation. \n";
-    """
-    }
-
-
-
-process RSEM_directories {
-
-    executor 'SLURM'
-	
-    script:
-    //
-    //Directories creation
-    //  
-	if( params.mode == 'RSEMdir' )
-    """ 
-		if [ ! -d "${params.rsemDir}" ]; then
-			cd ${params.workpath}/${params.resultsdir}; mkdir  ${params.rsemDir}; chmod 777  ${params.rsemDir};
-		fi
-		if [ ! -d "${params.rsem}" ]; then
-			cd ${params.workpath}/${params.resultsdir}; mkdir ${params.rsem}/; chmod 777  ${params.rsem}/; 
-		fi
-    """
-    else 
-    """
-		echo "Directories creation. \n";
-    """
-    }
-
 
 
 process star {
@@ -319,9 +451,7 @@ process Cufflinks {
 			echo "\n OK - NO Cufflinks" >> ${params.output}/README;      
 		else 	
 			cd ${params.workpath}/${params.resultsdir};
-			if [ ! -d "${params.cufflinksDir}" ]; then
-				mkdir  ${params.cufflinksDir}/; chmod 777  ${params.cufflinksDir}/; 
-			fi
+			
 			if [ ! -d "${params.cufflinksDir}/${pair_id}/" ]; then
 				cd  ${params.cufflinksDir}/; mkdir ${pair_id}/; chmod 777  ${pair_id}/; 
 			fi
@@ -343,6 +473,31 @@ process Cufflinks {
     }
 
 
+process CufflinksList{
+    
+    cpus 8
+	executor 'SLURM'
+	
+	script:
+    if( params.mode == 'cufflinksListOK' )
+    """
+		if [[ "${params.debug}" =~ .*Mrg.*  ]]; then
+			echo "\n OK - NO Cufflinks list" >> ${params.output}/README;      
+		else 
+			#Remove GTF old list 
+			if [ -f "${params.cufflinksDir}/CufflinksGTF.txt" ]; then
+				rm -rf ${params.cufflinksDir}/CufflinksGTF.txt;
+			fi
+			#generate a new GTF list
+			ls -1 ${params.cufflinksDir}/*/transcripts.gtf >> ${params.cufflinksDir}/CufflinksGTF.txt; 
+		fi	
+	"""
+    else 
+    """
+		echo "Cufflinks GTF list not (finished) yet. \n";
+    """
+    }
+    
 params.GTF ="${params.workpath}/${params.resultsdir}/CUFFLINKS/*/transcripts.gtf"
 transcripts_ch = Channel.fromPath(params.GTF)
 
@@ -359,12 +514,6 @@ process Cuffmerge {
     if( params.mode == 'cuffmerge' )
     """
 		cd ${params.workpath}/${params.resultsdir};
-		#GTF list
-		ls -1 ${params.cufflinksDir}/*/transcripts.gtf >> ${params.cufflinksDir}/CufflinksGTF.txt; 
-		cd ${params.workpath}/${params.resultsdir};
-		if [ ! -d "${params.cuffmergeDir}" ]; then
-			mkdir  ${params.cuffmergeDir}/; chmod 777  ${params.cuffmergeDir}/; 
-		fi
 		cd ${params.cuffmergeDir}/; 
      
 		if [[ "${params.debug}" =~ .*Mrg.*  ]]; then
@@ -407,9 +556,7 @@ process fCounts {
     if( params.mode == 'fCounts' )
     """
 		cd ${params.workpath}/${params.resultsdir};
-		if [ ! -d "${params.fCounts}" ]; then
-			mkdir  ${params.fCounts}/; chmod 777  ${params.fCounts}/; 
-		fi
+		
 		cd ${params.fCounts}/; 
 		if [[ "${params.debug}" =~ .*FC.*  ]]; then
 			echo "\n OK - NO FeatureCounts" >> ${params.output}/README;      
@@ -461,9 +608,7 @@ process fCountsOnRef {
     if( params.mode == 'fCountsOnRef' )
     """
 		cd ${params.workpath}/${params.resultsdir};
-		if [ ! -d "${params.fCountsOnRef}" ]; then
-			mkdir  ${params.fCountsOnRef}/; chmod 777  ${params.fCountsOnRef}/; 
-		fi
+		
 		cd ${params.fCountsOnRef}/; 
 		if [[ "${params.debug}" =~ .*fref.*  ]]; then
 			echo "\n OK - NO FeatureCounts" >> ${params.output}/README;      
@@ -512,15 +657,9 @@ process FEELnc {
     if( params.mode == 'FEELnc' )
     """
 		cd ${params.workpath}/${params.resultsdir};
-		if [ ! -d "${params.feelnc}" ]; then
-			mkdir  ${params.feelnc}; chmod 777  ${params.feelnc};
-		fi
-     
+		     
 		#step 1 : FILTER
-		if [ ! -d "${params.feelnc}/filter" ]; then
-			cd  ${params.feelnc}; mkdir filter/; chmod 777 filter/;
-		fi
-     
+		  
 		if [[ "${params.debug}" =~ .*FEELnc.*  ]]; then
 			echo "\n OK - NO FEELnc filter" >> ${params.output}/README;      
 		else 
@@ -530,16 +669,7 @@ process FEELnc {
 		fi
 		cd ${params.workpath}/${params.resultsdir};
 		#step 2 : PROTEIN PROT shuffle et intergenic
-		if [ ! -d "${params.feelnc}/protein_coding/" ]; then
-			cd ${params.feelnc}; mkdir protein_coding/; chmod 777 protein_coding/;
-		fi
-		if [ ! -d "${params.feelnc}/protein_coding/shuffle" ]; then
-			cd ${params.feelnc}/protein_coding/ ; mkdir shuffle/; chmod 777 shuffle/;
-		fi
-		if [ ! -d "${params.feelnc}/protein_coding/intergenic/" ]; then
-			cd ${params.feelnc}/protein_coding/; mkdir intergenic/; chmod 777 intergenic/;
-		fi
-     
+		    
 		if [[ "${params.debug}" =~ .*FEELnc.*  ]]; then
 			echo "\n OK - NO FEELnc codprot" >> ${params.output}/README;      
 		else 
@@ -570,16 +700,7 @@ process FEELnc {
 
 
     #step 3 : CLASSIFIER shuffle et intergenic
-    if [ ! -d "${params.feelnc}/classifier/" ]; then
-		cd ${params.feelnc}/; mkdir classifier/; chmod 777 classifier/;
-    fi
-    if [ ! -d "${params.feelnc}/classifier/shuffle" ]; then
-		cd ${params.feelnc}/classifier/; mkdir shuffle/; chmod 777 shuffle/;
-    fi
-    if [ ! -d "${params.feelnc}/classifier/intergenic/" ]; then
-			cd ${params.feelnc}/classifier/; mkdir intergenic/; chmod 777 intergenic/;
-    fi 
-     
+       
     if [[ "${params.debug}" =~ .*FEELnc.*  ]]; then
 		echo "\n OK - NO FEELnc classifier" >> ${params.output}/README;      
     else 
