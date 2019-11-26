@@ -275,7 +275,7 @@ process indexation_star {
 				cd ${params.workpath}/${params.resultsdir}; mkdir STAR_GenomeDir; chmod 777  STAR_GenomeDir; 
 			fi  
 			cd ${params.workpath}/${params.resultsdir};
-	        module load bioinfo/STAR-2.5.1b; module load bioinfo/samtools-1.4; 
+	        	module load bioinfo/STAR-2.5.1b; module load bioinfo/samtools-1.4; 
 			STAR --runThreadN 8 --runMode genomeGenerate --limitGenomeGenerateRAM 35000000000 --genomeDir STAR_GenomeDir/ --genomeFastaFiles ${params.genome} --sjdbGTFfile  ${params.annotation} --sjdbOverhang 100;
 			module unload bioinfo/STAR-2.5.1b; module unload bioinfo/samtools-1.4;
 			echo "\n OK - STAR Genome Generate - Run at  `date`" >> ${params.output}/README;
@@ -311,26 +311,26 @@ process star {
     """   
 	else if( params.mode == 'starmap' )
     """
-		cd ${params.workpath}/${params.resultsdir};
-		if [ ! -d "${params.readstrimmedDir}/${pair_id}/" ]; then
-			cd  ${params.readstrimmedDir}/; mkdir ${pair_id}/; chmod 777 ${pair_id}/; 
-		fi
-		cd ${params.readsPath};
-		if [[ "${params.debug}" =~ .*Cleaning.*  ]]; then
-			echo "\n OK - NO Cleaning" >> ${params.output}/README;      
-		else  
-			cutadapt -a ${params.adaptatora} -A ${params.adaptA} --minimum-length 20 --output ${params.readstrimmedDir}/${pair_id}/trimmed1.fastq --paired-output ${params.readstrimmedDir}/${pair_id}/trimmed2.fastq  ${reads}  > ${params.readstrimmedDir}/${pair_id}/cutadapt.log;
-			echo "\n OK - Trimming on ${reads} - Run at  `date`" >> ${params.output}/README;
-		fi
-		cp ${params.readstrimmedDir}/${pair_id}/cutadapt.log ${params.multiQC}/${pair_id}_cutadapt.log;
-		
-		if [ ! -d "${params.mappingDir}/${pair_id}/" ]; then
-			cd  ${params.mappingDir}/; mkdir ${pair_id}/; chmod 777 ${pair_id}/; 
-		fi	
-       
-		if [[ "${params.debug}" =~ .*STARmap.*  ]]; then
+         	if [[ "${params.debug}" =~ .*STARmap.*  ]]; then
 			echo "\n OK - NO STAR mapping" >> ${params.output}/README;      
 		else 
+			cd ${params.workpath}/${params.resultsdir};
+			if [ ! -d "${params.readstrimmedDir}/${pair_id}/" ]; then
+				cd  ${params.readstrimmedDir}/; mkdir ${pair_id}/; chmod 777 ${pair_id}/; 
+			fi
+			cd ${params.readsPath};
+			if [[ "${params.debug}" =~ .*Cleaning.*  ]]; then
+				echo "\n OK - NO Cleaning" >> ${params.output}/README;      
+			else  
+				cutadapt -a ${params.adaptatora} -A ${params.adaptA} --minimum-length 20 --output ${params.readstrimmedDir}/${pair_id}/trimmed1.fastq --paired-output ${params.readstrimmedDir}/${pair_id}/trimmed2.fastq  ${reads}  > ${params.readstrimmedDir}/${pair_id}/cutadapt.log;
+				echo "\n OK - Trimming on ${reads} - Run at  `date`" >> ${params.output}/README;
+			fi
+			cp ${params.readstrimmedDir}/${pair_id}/cutadapt.log ${params.multiQC}/${pair_id}_cutadapt.log;
+
+			if [ ! -d "${params.mappingDir}/${pair_id}/" ]; then
+				cd  ${params.mappingDir}/; mkdir ${pair_id}/; chmod 777 ${pair_id}/; 
+			fi	
+       		
 			STAR --genomeDir ${params.genomeDir} --readFilesIn ${params.readstrimmedDir}/${pair_id}/trimmed1.fastq ${params.readstrimmedDir}/${pair_id}/trimmed2.fastq --runThreadN 8  --outSAMtype BAM SortedByCoordinate --outFileNamePrefix ${params.mappingDir}/${pair_id}/ -outFilterType BySJout --quantMode TranscriptomeSAM --outSAMstrandField intronMotif --outFilterIntronMotifs RemoveNoncanonical --alignIntronMin 10 --alignIntronMax 25000 --outFilterMismatchNmax 10 ;
 			echo "\n OK - STAR mapping on ${params.readstrimmedDir}/${pair_id}/trimmed1.fastq   and ${params.readstrimmedDir}/${pair_id}/trimmed2.fastq  - Run at  `date`" >> ${params.output}/README;
 
@@ -378,20 +378,19 @@ process Rsem {
     script:
     if( params.mode == 'RSEM' )
     """
-		cd ${params.workpath}/${params.resultsdir};
-	    
-		if [ ! -d "${params.rsem}/${pair_id}/" ]; then
-			cd  ${params.rsem}/; mkdir ${pair_id}/; chmod 777  ${pair_id}/; 
-		fi
-        
-        if [[ "${params.debug}" =~ .*prep.*  ]]; then
+    	if [[ "${params.debug}" =~ .*prep.*  ]]; then
 			echo "\n OK - NO RSEM reference preparation" >> ${params.output}/README;      
         else 
+			cd ${params.workpath}/${params.resultsdir};
+
+			if [ ! -d "${params.rsem}/${pair_id}/" ]; then
+				cd  ${params.rsem}/; mkdir ${pair_id}/; chmod 777  ${pair_id}/; 
+			fi
 			#module load bioinfo/RSEM-1.3.0; 
 			rsem-prepare-reference --gtf ${params.annotation}  ${params.genome} ${params.rsemDir}/animal_refseq;
 			#module unload bioinfo/RSEM-1.3.0; 
 			echo "\n OK - RSEM Genome Generate - Run at  `date`" >> ${params.output}/README;
-		fi
+	fi
 		
 		if [[ "${params.debug}" =~ .*Rsem.*  ]]; then
             echo "\n OK - NO RSEM" >> ${params.output}/README;      
@@ -513,12 +512,11 @@ process Cuffmerge {
     script:
     if( params.mode == 'cuffmerge' )
     """
-		cd ${params.workpath}/${params.resultsdir};
-		cd ${params.cuffmergeDir}/; 
-     
 		if [[ "${params.debug}" =~ .*Mrg.*  ]]; then
 			echo "\n OK - NO Cuffmerge" >> ${params.output}/README;      
 		else 	
+			cd ${params.workpath}/${params.resultsdir};
+			cd ${params.cuffmergeDir}/; 
 			#cuffmerge -o ${params.cuffmergeDir}/  -p 4 --ref-sequence  ${params.genome}  -g ${params.annotation}  --min-isoform-fraction 0.05 ${params.cufflinksDir}/CufflinksGTF.txt;
 			#cuffmerge -o ${params.cuffmergeDir}/  -p 4 --ref-sequence  ${params.genome}  -g ${params.annotationGFF3}  --min-isoform-fraction 0.05 ${params.cufflinksDir}/CufflinksGTF.txt;
 			#without GTF reference (optional)
@@ -555,12 +553,11 @@ process fCounts {
     script:
     if( params.mode == 'fCounts' )
     """
-		cd ${params.workpath}/${params.resultsdir};
-		
-		cd ${params.fCounts}/; 
 		if [[ "${params.debug}" =~ .*FC.*  ]]; then
 			echo "\n OK - NO FeatureCounts" >> ${params.output}/README;      
 		else 
+			cd ${params.workpath}/${params.resultsdir};
+			cd ${params.fCounts}/; 
 			featureCounts -s 2 -M -O --primary -t exon -g transcript_id -a ${params.cuffmergeDir}/merged.gtf -o ${params.fCounts}/transcripts.fcounts ${params.mappingDir}/${pair_id}/Aligned.sortedByCoord.out.bam; 
 			echo "\n OK - featureCounts on ${params.mappingDir}/${pair_id}/Aligned.sortedByCoord.out.bam - Run at  `date`" >> ${params.output}/README;  
 		fi	
@@ -607,12 +604,11 @@ process fCountsOnRef {
     script:
     if( params.mode == 'fCountsOnRef' )
     """
-		cd ${params.workpath}/${params.resultsdir};
-		
-		cd ${params.fCountsOnRef}/; 
 		if [[ "${params.debug}" =~ .*fref.*  ]]; then
 			echo "\n OK - NO FeatureCounts" >> ${params.output}/README;      
 		else 
+			cd ${params.workpath}/${params.resultsdir};
+			cd ${params.fCountsOnRef}/; 
 			featureCounts -s 2 -M -O --primary -t exon -g transcript_id -a ${params.annotation} -o ${params.fCountsOnRef}/transcripts.fcounts ${params.mappingDir}/${pair_id}/Aligned.sortedByCoord.out.bam; 
 			echo "\n OK - featureCounts for GTF reference on ${params.mappingDir}/${pair_id}/Aligned.sortedByCoord.out.bam - Run at  `date`" >> ${params.output}/README;
 		fi	
