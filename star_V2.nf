@@ -678,6 +678,9 @@ process FEELnc {
 			cp ${params.feelnc}/protein_coding/shuffle/*/candidate_lncRNA.gtf_RF_statsLearn_CrossValidation.txt 	${params.multiQC}/shuffle_candidate_lncRNA.gtf_RF_statsLearn_CrossValidation.txt; 
 			cp ${params.feelnc}/protein_coding/shuffle/*/candidate_lncRNA.gtf_RF.txt 	${params.multiQC}/shuffle_candidate_lncRNA.gtf_RF.txt; 
 			cp ${params.feelnc}/protein_coding/shuffle/*/candidate_lncRNA.gtf_RF_summary.txt 	${params.multiQC}/shuffle_candidate_lncRNA.gtf_RF_summary.txt;      
+			if [ -f "${params.feelnc}/protein_coding/shuffle/*.log" ]; then
+				cp ${params.feelnc}/protein_coding/shuffle/*.log ${params.multiQC}/.;
+			fi 
 		fi
 	
     cd ${params.feelnc}/protein_coding/intergenic/; 
@@ -692,6 +695,9 @@ process FEELnc {
 		cp ${params.feelnc}/protein_coding/intergenic/*/candidate_lncRNA.gtf_RF_statsLearn_CrossValidation.txt 	${params.multiQC}/intergenic_candidate_lncRNA.gtf_RF_statsLearn_CrossValidation.txt; 
 		cp ${params.feelnc}/protein_coding/intergenic/*/candidate_lncRNA.gtf_RF.txt 	${params.multiQC}/intergenic_candidate_lncRNA.gtf_RF.txt; 
 		cp ${params.feelnc}/protein_coding/intergenic/*/candidate_lncRNA.gtf_RF_summary.txt 	${params.multiQC}/intergenic_candidate_lncRNA.gtf_RF_summary.txt;      
+		if [ -f "${params.feelnc}/protein_coding/intergenic/*.log" ]; then
+				cp ${params.feelnc}/protein_coding/intergenic/*.log ${params.multiQC}/.;
+		fi 
     fi
 
 
@@ -719,8 +725,10 @@ process FEELnc {
 			 
 		FEELnc_classifier.pl -i ${params.feelnc}/lst_intergenic_lncRNA_noORF.gtf -a  ${params.feelnc}/training_prot.gtf   > ${params.feelnc}/classifier/intergenic/lncRNA_intergenic_classes.txt;
 			 
-		##quality on classifier shuffle and intergenic step
-		cp ${params.feelnc}/classifier/*.log ${params.multiQC}/.;  
+		#quality on classifier shuffle and intergenic step
+		if [ -f "${params.feelnc}/classifier/*.log" ]; then
+			cp ${params.feelnc}/classifier/*.log ${params.multiQC}/.;
+		fi 
 	fi	
     echo "\n OK - FEELnc (filter, protein coding and classifier) on ${params.cuffmergeDir}/merged.gtf - Run at  `date`" >> ${params.output}/README;
     """
