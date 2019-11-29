@@ -85,11 +85,6 @@ echo "list of conditions = $listcond  \n";
 #debuglist=${debugwf//,/ }
 #echo "Debug mode = $debuglist \n";
 
-#smaman@genologin1 /work/smaman/nextflow_star_rsem_cufflinks_cuffmerge_feelnc $ ./STARcuff.sh  --workdir /work/smaman/nextflow_star_rsem_cufflinks_cuffmerge_feelnc/ --genome Bos_taurus.UMD3.1.dna.toplevel.fa --annotation Bos_taurus.UMD3.1.92.gtf --conditions neg,pos --mode quantif
-#workdir=/work/smaman/nextflow_star_rsem_cufflinks_cuffmerge_feelnc/, mode=quantif, genome=Bos_taurus.UMD3.1.dna.toplevel.fa, annotation=-, conditions=neg,pos
-#list of conditions = neg pos
-
-
 #$wd= ${args[0]}
 #$modewf
 #$fasta=${args[1]}
@@ -227,7 +222,7 @@ then
 		module unload bioinfo/RSEM-1.3.0 &&
 		echo "RSEM .............................................. FINISH \n" &&
 		#quality
-		./nextflow run star_V2.nf --mode qual --debug $debugwf --workpath $wd --resultsdir $rd -with-dag $wd/$rd/RSEM_flowchart.png  -with-report $wd/$rd/Quantification_RSEM.report -with-timeline $wd/$rd/Quantification_RSEM.timeline  &&
+		./nextflow run star_V2.nf --mode qual --debug $debugwf --workpath $wd --resultsdir $rd  -with-report $wd/$rd/Quantification_RSEM.report -with-timeline $wd/$rd/Quantification_RSEM.timeline  &&
 		echo "multiQC .......................................... FINISH \n" &&
 		
 		
@@ -273,7 +268,7 @@ then
 		module unload bioinfo/cufflinks-2.2.1 &&
 		echo "Cuffmerge  ........................................ FINISH \n" &&
 		#quality
-		./nextflow run star_V2.nf --mode qual --debug $debugwf --workpath $wd --resultsdir $rd  -with-dag $wd/$rd/Cufflinks_flowchart.png -with-report $wd/$rd/Quantification_Cufflinks.report -with-timeline $wd/$rd/Quantification_Cufflinks.timeline  &&
+		./nextflow run star_V2.nf --mode qual --debug $debugwf --workpath $wd --resultsdir $rd  -with-report $wd/$rd/Quantification_Cufflinks.report -with-timeline $wd/$rd/Quantification_Cufflinks.timeline  &&
 		echo "multiQC .......................................... FINISH \n" &&
 			
 		
@@ -335,7 +330,7 @@ then
 
 		module unload system/R-3.4.3 && module unload bioinfo/FEELnc-v.0.1.1 &&
 		echo "Feelnc  ........................................... FINISH \n" &&
-		./nextflow run star_V2.nf --mode qual --debug $debugwf --workpath $wd --resultsdir $rd  -with-dag $wd/$rd/MODEL_flowchart.png -with-report $wd/$rd/Model_Generation_with_FEELnc.report -with-timeline $wd/$rd/Model_Generation_with_FEELnc.timeline  &&
+		./nextflow run star_V2.nf --mode qual --debug $debugwf --workpath $wd --resultsdir $rd  -with-report $wd/$rd/Model_Generation_with_FEELnc.report -with-timeline $wd/$rd/Model_Generation_with_FEELnc.timeline  &&
 		echo "multiQC .......................................... FINISH \n" &&
 		
 		echo "......................... YOUR NEXTFLOW PIPELINE IS FINISH \n" &&
