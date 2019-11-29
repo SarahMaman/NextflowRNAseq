@@ -182,6 +182,13 @@ Add your sequences files in "reads" directory, your GTF file in "annotation" dir
 
 __IMPORTANT__ : Reads files names *condition*_R1.fastq.gz and *condition*_R2.fastq.gz
 
+
+Please check that all .sh files  are executables (-rwxr-xr-x) otherwise ...
+```console
+$ chmod a+x *.sh
+```
+
+
 ## (Only if you don't run jobs on Genologin) - Install Nextflow entering the following command in the shell terminal
 
 
