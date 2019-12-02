@@ -156,7 +156,7 @@ Create 3 directories __annotation__ , __genome__ and __reads__ :
 
 ```console
   $ ls nextflow_star/
-  annotation  genome  nextflow  nextflow.conf  reads  STARcuff.sh  star.nf README script_concat_rsem.py report_multiqc.sh
+  annotation  genome  nextflow  nextflow.conf  reads  STARcuff_V2.sh  star_V2.nf README script_concat_rsem.py report_multiqc.sh
 ```
 
 "genome" directory contains your fasta reference file.
