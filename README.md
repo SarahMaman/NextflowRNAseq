@@ -249,3 +249,7 @@ __Warnings__
 * slurm-JobNumber.out contains pipeline logs. If any problem, please share this file.
 
 * A README file is generated in your results/ directory (/path/to/YourWorkDir/results/README). This file contains more informations about each step of the pipeline (inputs and outputs files and runned steps).
+
+__Biblio__
+https://www.biorxiv.org/content/10.1101/833962v1
+
