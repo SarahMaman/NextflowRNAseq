@@ -746,7 +746,9 @@ process quality {
     if( params.mode == 'qual' )
     """
 	#last Star mapping log
+	if [ -f "${params.workpath}/${params.resultsdir}/Log.out" ]; then
 	mv ${params.workpath}/${params.resultsdir}/Log.out ${params.multiQC}/Log.out; 
+	fi
 	cd ${params.multiQC}/; 
 	if [[ "${params.debug}" =~ .*Quality.*  ]]; then
 		echo "\n OK - NO quality and statistics" >> ${params.output}/README;      
