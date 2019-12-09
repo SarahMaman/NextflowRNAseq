@@ -69,17 +69,17 @@ STAR run with paired read, cufflinks option, quantMode on transcriptome
 Mapping parameters description <br/>
 (source: http://labshare.cshl.edu/shares/gingeraslab/www-data/dobin/STAR/STAR.posix/doc/STARmanual.pdf):
 ```console
---readFilesCommand zcat <br/>
---readFilesCommand : Compressed inputs files <br/>
---outSAMtype : Output BAM sorted by coordonate <br/>
---outFileNamePrefix : Output files name prefix (including full or relative path) <br/>
---outFilterType BySJout : Keep only those reads that contain junctions that passed ltering into SJ.out.tab <br/>
---quantMode TranscriptomeSAM : Output SAM/BAM alignments to transcriptome into a separate file <br/>
---outSAMstrandField intronMotif : Strand derived from the intron motif. Reads with inconsistent and/or non-canonical introns are filtered out. ( Cuffinks-like strand field flag) <br/>
---outFilterIntronMotifs RemoveNoncanonical : Filter out alignments that contain non-canonical junctions. <br/>
---alignIntronMin 10 : Minimum intron size: genomic gap is considered intron if its length >=alignIntronMin, otherwise it is considered Deletion. <br/>
---alignIntronMax 25000 : Maximum intron length <br/>
---outFilterMismatchNmax 10 : Maximum number of mismatches per pair, large number switches off this filter. <br/>
+--readFilesCommand zcat
+--readFilesCommand : Compressed inputs files
+--outSAMtype : Output BAM sorted by coordonate
+--outFileNamePrefix : Output files name prefix (including full or relative path)
+--outFilterType BySJout : Keep only those reads that contain junctions that passed ltering into SJ.out.tab
+--quantMode TranscriptomeSAM : Output SAM/BAM alignments to transcriptome into a separate file
+--outSAMstrandField intronMotif : Strand derived from the intron motif. Reads with inconsistent and/or non-canonical introns are filtered out. ( Cuffinks-like strand field flag)
+--outFilterIntronMotifs RemoveNoncanonical : Filter out alignments that contain non-canonical junctions.
+--alignIntronMin 10 : Minimum intron size: genomic gap is considered intron if its length >=alignIntronMin, otherwise it is considered Deletion. 
+--alignIntronMax 25000 : Maximum intron length 
+--outFilterMismatchNmax 10 : Maximum number of mismatches per pair, large number switches off this filter.
 ```
 
 * __Samtools sort__ aligned BAM files on names.
@@ -93,9 +93,9 @@ Cufflinks is both the name of a suite of tools and a program within that suite. 
 
 Parameters description :
 ```console
--g/GTF-guide reference_annotation.(gtf/gff) : Tells Cufflinks to use the supplied reference annotation a GFF file to guide RABT assembly. Reference transcripts will be tiled with faux-reads to provide additional information in assembly. Output will include all reference transcripts as well as any novel genes and isoforms that are assembled. <br/>
--F/min-isoform-fraction : After calculating isoform abundance for a gene, Cufflinks filters out transcripts that it believes are very low abundance, because isoforms expressed at extremely low levels often cannot reliably be assembled, and may even be artifacts of incompletely spliced precursors of processed transcripts. This parameter is also used to filter out introns that have far fewer spliced alignments supporting them. The default is 0.1, or 10% of the most abundant isoform (the major isoform) of the gene.<br/>
--j/pre-mrna-fraction : Some RNA-Seq protocols produce a significant amount of reads that originate from incompletely spliced transcripts, and these reads can confound the assembly of fully spliced mRNAs. Cufflinks uses this parameter to filter out alignments that lie within the intronic intervals implied by the spliced alignments. The minimum depth of coverage in the intronic region covered by the alignment is divided by the number of spliced reads, and if the result is lower than this parameter value, the intronic alignments are ignored. The default is 15%. <br/>
+-g/GTF-guide reference_annotation.(gtf/gff) : Tells Cufflinks to use the supplied reference annotation a GFF file to guide RABT assembly. Reference transcripts will be tiled with faux-reads to provide additional information in assembly. Output will include all reference transcripts as well as any novel genes and isoforms that are assembled.
+-F/min-isoform-fraction : After calculating isoform abundance for a gene, Cufflinks filters out transcripts that it believes are very low abundance, because isoforms expressed at extremely low levels often cannot reliably be assembled, and may even be artifacts of incompletely spliced precursors of processed transcripts. This parameter is also used to filter out introns that have far fewer spliced alignments supporting them. The default is 0.1, or 10% of the most abundant isoform (the major isoform) of the gene.
+-j/pre-mrna-fraction : Some RNA-Seq protocols produce a significant amount of reads that originate from incompletely spliced transcripts, and these reads can confound the assembly of fully spliced mRNAs. Cufflinks uses this parameter to filter out alignments that lie within the intronic intervals implied by the spliced alignments. The minimum depth of coverage in the intronic region covered by the alignment is divided by the number of spliced reads, and if the result is lower than this parameter value, the intronic alignments are ignored. The default is 15%.
 ```
 
 * __Cuffmerge__ transcripts from Cufflinks in a merged.gtf file.
@@ -129,18 +129,18 @@ MultiQC searches a given directory for analysis logs and compiles a HTML report.
 
 * Possible to add a __debug option__ "--debug Index,Cleaning" (debug steps to REMOVE: GenomeDir, Cleaning, STARmap, sort, prep, Rsem, Cuff, Mrg, FC, fref, FEELnc, Quality) if you want to run only one or several steps. If you don't need debug mode, just not add this parameter.<br/>
 ```console
-GenomeDir      : no STAR Genome Dir<br/>
-Cleaning       : no cutadapt<br/>
-STARmap        : no STAR mapping<br/>
-sort           : no samtools sort<br/>
-prep           : no RSEM prepare reference<br/>
-Rsem           : no RSEM<br/>
-Cuff           : no Cufflinks  <br/>
-Mrg            : no Cuffmerge<br/>
-FC             : no FeatureCounts on merged.gft generated by Cuffmerge<br/>
-fref           : no FeatureCounts on reference GTF<br/>
-FEELnc         : no 3 steps of FEELnc<br/>
-Quality        : no multiQC and Nextflow statistics<br/>
+GenomeDir      : no STAR Genome Dir
+Cleaning       : no cutadapt
+STARmap        : no STAR mapping
+sort           : no samtools sort
+prep           : no RSEM prepare reference
+Rsem           : no RSEM
+Cuff           : no Cufflinks
+Mrg            : no Cuffmerge
+FC             : no FeatureCounts on merged.gft generated by Cuffmerge
+fref           : no FeatureCounts on reference GTF
+FEELnc         : no 3 steps of FEELnc
+Quality        : no multiQC and Nextflow statistics
 ```
 
 # B - HOW TO USE NEXTFLOW SCRIPT:
