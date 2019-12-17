@@ -142,6 +142,10 @@ then
 		./nextflow run star_V2.nf --mode fCountsQuality  --debug $debugwf --workpath $wd --resultsdir $rd   &&
 		./nextflow run star_V2.nf --mode qual --debug $debugwf --workpath $wd --resultsdir $rd -with-report $wd/$rd/Quantification_FeatureCounts.report -with-timeline $wd/$rd/Quantification_FeatureCounts.timeline  &&
 		echo "multiQC .......................................... FINISH \n" &&
+		#Step fatsQCreport
+		module load bioinfo/FastQC_v0.11.5 &&
+		./nextflow run star_V2.nf --mode QC  --debug $debugwf --workpath $wd --resultsdir $rd  &&
+		echo "fastQCreport .................................... FINISH \n" &&		
 				
 		echo "........................ YOUR NEXTFLOW PIPELINE IS FINISH \n" &&
 		chmod 744 $wd/$rd/;
@@ -184,6 +188,10 @@ then
 		echo "featureCounts .................................... FINISH \n" &&
 		./nextflow run star_V2.nf --mode qual --debug $debugwf --workpath $wd --resultsdir $rd -with-report $wd/$rd/Quantification_FeatureCounts_OnRef.report -with-timeline $wd/$rd/Quantification_FeatureCounts_OnRef.timeline  &&
 		echo "multiQC .......................................... FINISH \n" &&
+		#Step fatsQCreport
+		module load bioinfo/FastQC_v0.11.5 &&
+		./nextflow run star_V2.nf --mode QC  --debug $debugwf --workpath $wd --resultsdir $rd  &&
+		echo "fastQCreport .................................... FINISH \n" &&
 				
 		echo "........................ YOUR NEXTFLOW PIPELINE IS FINISH \n" &&
 		chmod 744 $wd/$rd/;
@@ -224,7 +232,10 @@ then
 		#quality
 		./nextflow run star_V2.nf --mode qual --debug $debugwf --workpath $wd --resultsdir $rd  -with-report $wd/$rd/Quantification_RSEM.report -with-timeline $wd/$rd/Quantification_RSEM.timeline  &&
 		echo "multiQC .......................................... FINISH \n" &&
-		
+		#Step fatsQCreport
+		module load bioinfo/FastQC_v0.11.5 &&
+		./nextflow run star_V2.nf --mode QC  --debug $debugwf --workpath $wd --resultsdir $rd  &&
+		echo "fastQCreport .................................... FINISH \n" &&		
 		
 		echo "........................ YOUR NEXTFLOW PIPELINE IS FINISH \n" &&
 		chmod 744 $wd/$rd/;
@@ -270,7 +281,10 @@ then
 		#quality
 		./nextflow run star_V2.nf --mode qual --debug $debugwf --workpath $wd --resultsdir $rd  -with-report $wd/$rd/Quantification_Cufflinks.report -with-timeline $wd/$rd/Quantification_Cufflinks.timeline  &&
 		echo "multiQC .......................................... FINISH \n" &&
-			
+		#Step fatsQCreport
+		module load bioinfo/FastQC_v0.11.5 &&
+		./nextflow run star_V2.nf --mode QC  --debug $debugwf --workpath $wd --resultsdir $rd  &&
+		echo "fastQCreport .................................... FINISH \n" &&			
 		
 		echo "......................... YOUR NEXTFLOW PIPELINE IS FINISH \n" &&
 		chmod 744 $wd/$rd/;
@@ -332,7 +346,11 @@ then
 		echo "Feelnc  ........................................... FINISH \n" &&
 		./nextflow run star_V2.nf --mode qual --debug $debugwf --workpath $wd --resultsdir $rd  -with-report $wd/$rd/Model_Generation_with_FEELnc.report -with-timeline $wd/$rd/Model_Generation_with_FEELnc.timeline  &&
 		echo "multiQC .......................................... FINISH \n" &&
-		
+		#Step fatsQCreport
+		module load bioinfo/FastQC_v0.11.5 &&
+		./nextflow run star_V2.nf --mode QC  --debug $debugwf --workpath $wd --resultsdir $rd  &&
+		echo "fastQCreport .................................... FINISH \n" &&
+				
 		echo "......................... YOUR NEXTFLOW PIPELINE IS FINISH \n" &&
 		chmod 744 $wd/$rd/;
 fi
