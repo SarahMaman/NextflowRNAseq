@@ -418,8 +418,8 @@ process fastQCreport {
         else
 			cd ${params.readsPath};
 			fastqc -o ${params.fastQCreport}/ ${reads};
-			if [ ! -d "${params.readstrimmedDir}/${pair_id}/" ]; then
-				cd  ${params.readstrimmedDir}/; mkdir ${pair_id}/; chmod 777 ${pair_id}/; 
+			if [ ! -d "${params.fastQCreportTrimmed}/${pair_id}/" ]; then
+				cd  ${params.fastQCreportTrimmed}/; mkdir ${pair_id}/; chmod 777 ${pair_id}/; 
 			fi	
 			cd ${params.readstrimmedDir}/${pair_id}/;
 			fastqc -o ${params.fastQCreportTrimmed}/${pair_id}/  ${params.readstrimmedDir}/${pair_id}/trimmed1.fastq ${params.readstrimmedDir}/${pair_id}/trimmed2.fastq;
