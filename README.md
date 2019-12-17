@@ -134,6 +134,7 @@ Cleaning       : no cutadapt
 STARmap        : no STAR mapping
 sort           : no samtools sort
 prep           : no RSEM prepare reference
+FQ             : no FastQC report
 Rsem           : no RSEM
 Cuff           : no Cufflinks
 Mrg            : no Cuffmerge
