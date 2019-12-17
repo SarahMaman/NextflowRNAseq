@@ -26,6 +26,8 @@ params.rsem            ="${params.workpath}/${params.resultsdir}/RSEM"
 params.fCounts         ="${params.workpath}/${params.resultsdir}/FeatureCounts"
 params.fCountsOnRef    ="${params.workpath}/${params.resultsdir}/FeatureCountsOnRef"
 params.multiQC         ="${params.workpath}/${params.resultsdir}/multiQC"
+params.fastQCreportTrimmed    ="${params.workpath}/${params.resultsdir}/fastQCreportTrimmed"
+params.fastQCreport    ="${params.workpath}/${params.resultsdir}/fastQCreport"
 params.adaptatora      ="AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC"
 params.adaptA          ="AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTAGATCTCGGTGGTCGCCGTATCATT"
 params.mode            = '' 
@@ -107,6 +109,13 @@ process make_directories {
 		if [ ! -d "${params.multiQC}" ]; then
 		   mkdir ${params.multiQC}/; chmod 777  ${params.multiQC}/; 
 		fi
+		#fastQCreport
+		if [ ! -d "${params.fastQCreportTrimmed}" ]; then
+			mkdir ${params.fastQCreportTrimmed}/; chmod 777 ${params.fastQCreportTrimmed}/;
+		fi
+		if [ ! -d "${params.fastQCreport}" ]; then
+			mkdir ${params.fastQCreport}/; chmod 777 ${params.fastQCreport}/;
+		fi
 	"""   
 	else if( params.mode == 'quantifRSEMDir' )
     """
@@ -134,6 +143,13 @@ process make_directories {
 		if [ ! -d "${params.multiQC}" ]; then
 		   mkdir ${params.multiQC}/; chmod 777  ${params.multiQC}/; 
 		fi
+		#fastQCreport
+		if [ ! -d "${params.fastQCreportTrimmed}" ]; then
+			mkdir ${params.fastQCreportTrimmed}/; chmod 777 ${params.fastQCreportTrimmed}/;
+		fi
+		if [ ! -d "${params.fastQCreport}" ]; then
+			mkdir ${params.fastQCreport}/; chmod 777 ${params.fastQCreport}/;
+		fi
 	"""   
 	else if( params.mode == 'quantifFCRefDir' )
     """
@@ -157,6 +173,13 @@ process make_directories {
 		#Quality
 		if [ ! -d "${params.multiQC}" ]; then
 		   mkdir ${params.multiQC}/; chmod 777  ${params.multiQC}/; 
+		fi
+		#fastQCreport
+		if [ ! -d "${params.fastQCreportTrimmed}" ]; then
+			mkdir ${params.fastQCreportTrimmed}/; chmod 777 ${params.fastQCreportTrimmed}/;
+		fi
+		if [ ! -d "${params.fastQCreport}" ]; then
+			mkdir ${params.fastQCreport}/; chmod 777 ${params.fastQCreport}/;
 		fi
     """   
 	else if( params.mode == 'quantifCufflinksDir' )
@@ -185,6 +208,13 @@ process make_directories {
 		#Quality
 		if [ ! -d "${params.multiQC}" ]; then
 		   mkdir ${params.multiQC}/; chmod 777  ${params.multiQC}/; 
+		fi
+		#fastQCreport
+		if [ ! -d "${params.fastQCreportTrimmed}" ]; then
+			mkdir ${params.fastQCreportTrimmed}/; chmod 777 ${params.fastQCreportTrimmed}/;
+		fi
+		if [ ! -d "${params.fastQCreport}" ]; then
+			mkdir ${params.fastQCreport}/; chmod 777 ${params.fastQCreport}/;
 		fi
 	"""   
 	else if( params.mode == 'modelDir' )
@@ -241,6 +271,13 @@ process make_directories {
 		#Quality
 		if [ ! -d "${params.multiQC}" ]; then
 		   cd ${params.workpath}/${params.resultsdir}; mkdir ${params.multiQC}/; chmod 777  ${params.multiQC}/; 
+		fi
+		#fastQCreport
+		if [ ! -d "${params.fastQCreportTrimmed}" ]; then
+			mkdir ${params.fastQCreportTrimmed}/; chmod 777 ${params.fastQCreportTrimmed}/;
+		fi
+		if [ ! -d "${params.fastQCreport}" ]; then
+			mkdir ${params.fastQCreport}/; chmod 777 ${params.fastQCreport}/;
 		fi
     """
     else 
@@ -359,6 +396,39 @@ process star {
 		echo "STAR step not yet or finish. \n";
     """
     }
+    
+Channel
+    .fromFilePairs( params.reads )                                             
+    .ifEmpty { error "Cannot find any reads matching: ${params.reads}" }  
+    .set { read_pairs5 } 
+    
+process fastQCreport {
+    
+    cpus 8
+	executor 'SLURM'
+
+	input:
+	set pair_id, file(reads) from read_pairs5
+
+    script:
+    if( params.mode == 'QC' )
+    """ 
+		if [[ "${params.debug}" =~ .*QC.*  ]]; then
+            echo "\n OK - NO fastQCreport" >> ${params.output}/README;      
+        else
+			cd ${params.readsPath};
+			fastqc -o ${params.fastQCreport}/ ${reads};
+			cd ${params.readstrimmedDir}/${pair_id}/;
+			fastqc -o ${params.fastQCreportTrimmed} ${params.readstrimmedDir}/${pair_id}/trimmed1.fastq ${params.readstrimmedDir}/${pair_id}/trimmed2.fastq;
+			echo "\n OK - fastQCreport on  ${pair_id} and on ${params.readstrimmedDir}/${pair_id}/trimmed1.fastq and trimmed2.fastq - Run at  `date`" >> ${params.output}/README;
+	fi		
+    """   
+    else 
+    """
+		echo "RSEM not (finished) yet. \n";
+    """  
+    }
+
 
 Channel
     .fromFilePairs( params.reads )                                             
