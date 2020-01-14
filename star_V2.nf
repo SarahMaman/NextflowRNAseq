@@ -471,8 +471,9 @@ process Rsem {
 			#Prepare BAM for RSEM
 			convert-sam-for-rsem  ${params.mappingDir}/${pair_id}/Aligned.toTranscriptome.sort.bam ${params.rsem}/${pair_id}/Aligned.toTranscriptome.sort.bam.ConvertedBam;
 			#RSEM 
-			rsem-calculate-expression --bam --no-bam-output --estimate-rspd --calc-ci --seed 12345 -p 4 --ci-memory 30000 --paired-end ${params.rsem}/${pair_id}/Aligned.toTranscriptome.sort.bam.ConvertedBam.bam  ${params.rsemDir}/animal_refseq ${params.rsem}/${pair_id}/Aligned.toTranscriptome.out.bam.ConvertedBam_Quant;
-		   
+			rsem-calculate-expression --append-names --bam --no-bam-output --estimate-rspd --calc-ci --seed 12345 -p 4 --ci-memory 30000 --paired-end ${params.rsem}/${pair_id}/Aligned.toTranscriptome.sort.bam.ConvertedBam.bam  ${params.rsemDir}/animal_refseq ${params.rsem}/${pair_id}/Aligned.toTranscriptome.out.bam.ConvertedBam_Quant;
+		        #rsem-calculate-expression --append-names tells RSEM to append gene_name/transcript_name to the result files.
+			
 			cp ${params.rsem}/${pair_id}/Aligned.toTranscriptome.out.bam.ConvertedBam_Quant.stat/Aligned.toTranscriptome.out.bam.ConvertedBam_Quant.cnt   ${params.multiQC}/${pair_id}_Aligned.toTranscriptome.out.bam.ConvertedBam_Quant.cnt;
 			cp ${params.rsem}/${pair_id}/Aligned.toTranscriptome.out.bam.ConvertedBam_Quant.stat/Aligned.toTranscriptome.out.bam.ConvertedBam_Quant.model  ${params.multiQC}/${pair_id}_Aligned.toTranscriptome.out.bam.ConvertedBam_Quant.model;
 			cp ${params.rsem}/${pair_id}/Aligned.toTranscriptome.out.bam.ConvertedBam_Quant.stat/Aligned.toTranscriptome.out.bam.ConvertedBam_Quant.theta  ${params.multiQC}/${pair_id}_Aligned.toTranscriptome.out.bam.ConvertedBam_Quant.theta;
