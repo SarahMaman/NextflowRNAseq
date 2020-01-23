@@ -477,15 +477,39 @@ process Rsem {
 			cp ${params.rsem}/${pair_id}/Aligned.toTranscriptome.out.bam.ConvertedBam_Quant.stat/Aligned.toTranscriptome.out.bam.ConvertedBam_Quant.cnt   ${params.multiQC}/${pair_id}_Aligned.toTranscriptome.out.bam.ConvertedBam_Quant.cnt;
 			cp ${params.rsem}/${pair_id}/Aligned.toTranscriptome.out.bam.ConvertedBam_Quant.stat/Aligned.toTranscriptome.out.bam.ConvertedBam_Quant.model  ${params.multiQC}/${pair_id}_Aligned.toTranscriptome.out.bam.ConvertedBam_Quant.model;
 			cp ${params.rsem}/${pair_id}/Aligned.toTranscriptome.out.bam.ConvertedBam_Quant.stat/Aligned.toTranscriptome.out.bam.ConvertedBam_Quant.theta  ${params.multiQC}/${pair_id}_Aligned.toTranscriptome.out.bam.ConvertedBam_Quant.theta;
+		
+	fi		
+    """   
+    else 
+    """
+		echo "RSEM not (finished) yet. \n";
+    """  
+    }
+    
+    
+process RsemConcat {
+    
+    cpus 8
+	executor 'SLURM'
+
+
+    script:
+    if( params.mode == 'RSEMconcat' )
+    """ 
+		if [[ "${params.debug}" =~ .*Rsem.*  ]]; then
+            echo "\n OK - NO RSEM" >> ${params.output}/README;      
+        else
+			cd ${params.workpath}/${params.resultsdir};
+		
 			
 			#Script de concatenation des fichiers de quantifications des isoforms en matrice globale 
-			python ${params.workpath}/script_concat_rsem.py -o ${params.rsem}/MATRICE_isoforms_expected_count -s expected_count -i ${params.rsem}/*/*isoforms*;
-			python ${params.workpath}/script_concat_rsem.py -o ${params.rsem}/MATRICE_isoforms_TPM -s TPM -i ${params.rsem}/*/*isoforms*;
-			python ${params.workpath}/script_concat_rsem.py -o ${params.rsem}/MATRICE_isoforms_FPKM -s FPKM -i ${params.rsem}/*/*isoforms*;
+			python ${params.workpath}/script_concat_rsem.py -o ${params.rsem}/MATRICE_isoforms_expected_count -s expected_count -i ${params.rsem}/*/*isoforms* &&
+			python ${params.workpath}/script_concat_rsem.py -o ${params.rsem}/MATRICE_isoforms_TPM -s TPM -i ${params.rsem}/*/*isoforms* &&
+			python ${params.workpath}/script_concat_rsem.py -o ${params.rsem}/MATRICE_isoforms_FPKM -s FPKM -i ${params.rsem}/*/*isoforms* &&
 			#Script de concatenation des fichiers de quantifications des genes en matrice globale
-			python ${params.workpath}/script_concat_rsem.py -o ${params.rsem}/MATRICE_genes_expeced_count -s expected_count -i ${params.rsem}/*/*genes*;
-			python ${params.workpath}/script_concat_rsem.py -o ${params.rsem}/MATRICE_genes_TPM -s TPM -i ${params.rsem}/*/*genes*;
-			python ${params.workpath}/script_concat_rsem.py -o ${params.rsem}/MATRICE_genes_FPKM -s FPKM -i ${params.rsem}/*/*genes*;
+			python ${params.workpath}/script_concat_rsem.py -o ${params.rsem}/MATRICE_genes_expeced_count -s expected_count -i ${params.rsem}/*/*genes* &&
+			python ${params.workpath}/script_concat_rsem.py -o ${params.rsem}/MATRICE_genes_TPM -s TPM -i ${params.rsem}/*/*genes* &&
+			python ${params.workpath}/script_concat_rsem.py -o ${params.rsem}/MATRICE_genes_FPKM -s FPKM -i ${params.rsem}/*/*genes* &&
 			echo "\n OK - RSEM sort on Aligned.toTranscriptome.out.bam.ConvertedBam - Run at  `date`" >> ${params.output}/README;
 	fi		
     """   
