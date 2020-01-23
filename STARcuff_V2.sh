@@ -227,6 +227,7 @@ then
 		./nextflow run star_V2.nf --mode RSEMdir  --debug $debugwf --workpath $wd --resultsdir $rd   &&
 		module load bioinfo/RSEM-1.3.0 &&
 		./nextflow run star_V2.nf --mode RSEM --debug $debugwf --workpath $wd --resultsdir $rd --fasta $fasta --gtf $gtf  &&
+		./nextflow run star_V2.nf --mode RSEMconcat --debug $debugwf --workpath $wd --resultsdir $rd  &&
 		module unload bioinfo/RSEM-1.3.0 &&
 		echo "RSEM .............................................. FINISH \n" &&
 		#quality
